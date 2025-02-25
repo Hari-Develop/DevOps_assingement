@@ -1,43 +1,35 @@
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
-  name: postgresql
+  name: postgres
+  labels:
+    app: postgres
 spec:
-  serviceName: postgresql
   replicas: 1
   selector:
     matchLabels:
-      app: postgresql
+      app: postgres
   template:
     metadata:
       labels:
-        app: postgresql
+        app: postgres
     spec:
-      automountServiceAccountToken: false  # 🔹 Fix: Disable service account token auto-mount
       containers:
-        - name: postgresql
-          image: postgres:latest
+        - name: postgres
+          image: postgres:13
           ports:
             - containerPort: 5432
-          resources:
-            requests:
-              cpu: "250m"
-              memory: "512Mi"
-              ephemeral-storage: "1Gi"  # 🔹 Fix: Storage request
-            limits:
-              cpu: "500m"
-              memory: "1Gi"
-              ephemeral-storage: "2Gi"  # 🔹 Fix: Storage limit
+          env:
+            - name: POSTGRES_USER
+              value: "admin"  # Set your PostgreSQL user here
+            - name: POSTGRES_PASSWORD
+              value: "password"  # Set your PostgreSQL password here
+            - name: POSTGRES_DB
+              value: "mydb"  # Set your database name here
           volumeMounts:
-            - name: postgresql-storage
+            - name: postgres-data
               mountPath: /var/lib/postgresql/data
-  volumeClaimTemplates:
-    - metadata:
-        name: postgresql-storage
-      spec:
-        accessModes: ["ReadWriteOnce"]
-        resources:
-          requests:
-            storage: "5Gi"
-          limits:
-            storage: "10Gi"  # 🔹 Fix: Added storage limit
+      volumes:
+        - name: postgres-data
+          persistentVolumeClaim:
+            claimName: postgres-pvc  # Define PVC to persist data
