@@ -13,7 +13,7 @@ spec:
       labels:
         app: postgresql
     spec:
-      automountServiceAccountToken: false  
+      automountServiceAccountToken: false  # 🔹 Fix: Disable service account token auto-mount
       containers:
         - name: postgresql
           image: postgres:latest
@@ -23,9 +23,11 @@ spec:
             requests:
               cpu: "250m"
               memory: "512Mi"
+              ephemeral-storage: "1Gi"  # 🔹 Fix: Storage request
             limits:
               cpu: "500m"
               memory: "1Gi"
+              ephemeral-storage: "2Gi"  # 🔹 Fix: Storage limit
           volumeMounts:
             - name: postgresql-storage
               mountPath: /var/lib/postgresql/data
@@ -38,4 +40,4 @@ spec:
           requests:
             storage: "5Gi"
           limits:
-            storage: "10Gi"
+            storage: "10Gi"  # 🔹 Fix: Added storage limit
