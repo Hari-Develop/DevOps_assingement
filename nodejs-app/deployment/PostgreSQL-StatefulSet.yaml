@@ -13,6 +13,7 @@ spec:
       labels:
         app: postgresql
     spec:
+      automountServiceAccountToken: false 
       containers:
         - name: postgresql
           image: postgres:latest
@@ -20,11 +21,11 @@ spec:
             - containerPort: 5432
           resources:
             requests:
-              cpu: "250m"   
-              memory: "512Mi" 
+              cpu: "250m"
+              memory: "512Mi"
             limits:
-              cpu: "500m"  
-              memory: "1Gi"  
+              cpu: "500m"
+              memory: "1Gi"
           volumeMounts:
             - name: postgresql-storage
               mountPath: /var/lib/postgresql/data
@@ -35,6 +36,6 @@ spec:
         accessModes: ["ReadWriteOnce"]
         resources:
           requests:
-            storage: "5Gi" 
+            storage: "5Gi"
           limits:
-            storage: "10Gi" 
+            storage: "10Gi"  
