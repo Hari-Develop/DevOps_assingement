@@ -6,7 +6,7 @@ def configMap = [
 ]
 
 if(env.BRANCH_NAME.equalsIgnoreCase('main')){
-    pipelineDession.decidePipeline(configMap)
+    pipelineDecission.decidePipeline(configMap)
 }
 else {
     echo "This is the production request"
