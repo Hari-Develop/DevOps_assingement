@@ -1,7 +1,7 @@
 @Library('jenkins_shared_library') _
 
 def configMap = [
-    application: "nodejs",
+    application: "nodejsVM",
 ]
 
 if(env.BRANCH_NAME.equalsIgnoreCase('main')){
