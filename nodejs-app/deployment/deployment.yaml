@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: nodejs-app
+  labels:
+    app: nodejs-app
 spec:
   replicas: 2
   selector:
@@ -14,9 +16,13 @@ spec:
     spec:
       containers:
         - name: nodejs-app
-          image: harinadhareddy/nodejs-app:latest
-          envFrom:
-            - secretRef:
-                name: postgres-secret
+          image: harinadhareddy/nodejs-app:latest  # Your Docker Hub image
           ports:
             - containerPort: 3000
+          envFrom:
+            - configMapRef:
+                name: nodejs-config
+            - secretRef:
+                name: nodejs-secret
+      imagePullSecrets:
+        - name: docker-hub-secret  # Use the secret we created
