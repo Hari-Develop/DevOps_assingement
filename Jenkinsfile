@@ -2,7 +2,6 @@
 
 def configMap = [
     application: "nodejs",
-    component: "catalogue"
 ]
 
 if(env.BRANCH_NAME.equalsIgnoreCase('main')){
